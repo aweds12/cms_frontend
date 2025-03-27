@@ -1,3 +1,5 @@
+"use client";
+
 import React, { FormEvent, useState } from "react";
 import FormInput from "../formInput";
 import { useSearchParams } from "next/navigation";

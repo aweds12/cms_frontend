@@ -1,25 +1,10 @@
 "use client";
 
 import FormChanger from "@/components/formChanger/page";
-import Loading from "@/components/loading";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { FormEvent, useEffect, useState } from "react";
+import React from "react";
 
 export default function AdminAuth() {
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!!localStorage.getItem("token")) {
-      router.push("/");
-    }
-    setLoading(false);
-  });
-
-  if (loading) {
-    return <Loading />;
-  }
   return (
     <div className="size-full h-screen flex gap-4 items-center justify-center bg-gray-800">
       <div className="w-fit">

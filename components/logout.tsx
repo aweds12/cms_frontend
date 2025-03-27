@@ -2,12 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import React from "react";
+import Cookies from "js-cookie";
 
 export default function LogoutButton() {
   const router = useRouter();
 
   const handleLogout = () => {
-    localStorage.clear();
+    Cookies.remove("token");
     router.push("/");
   };
 

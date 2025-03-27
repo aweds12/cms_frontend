@@ -1,6 +1,9 @@
+"use client";
+
 import React, { FormEvent, useState } from "react";
 import FormInput from "../formInput";
 import { useSearchParams } from "next/navigation";
+import Cookies from "js-cookie";
 
 export default function SignupForm({ regDone }: { regDone: () => void }) {
   const params = useSearchParams();
@@ -14,13 +17,12 @@ export default function SignupForm({ regDone }: { regDone: () => void }) {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const apiurl = `${process.env.NEXT_PUBLIC_API_KEY}/auth/signup`;
     try {
-      // `https://cms-backend-one.vercel.app/auth/signup`
-      const res = await fetch("http://localhost:8080/auth/signup", {
+      const res = await fetch(apiurl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
         },
         body: JSON.stringify(creds),
       });

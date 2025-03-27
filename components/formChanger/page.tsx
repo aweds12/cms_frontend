@@ -1,13 +1,14 @@
+"use client";
+
 import React, { FormEvent, useState } from "react";
-import FormInput from "../formInput";
-import SigninForm from "./singin";
+import SigninForm from "./signin";
 import SignupForm from "./signup";
 import { useSearchParams } from "next/navigation";
 import AdminSigninForm from "./adminSignin";
 import AdminSignupForm from "./adminSignup";
 
 export default function FormChanger() {
-  const [signIn, isSignIn] = useState(false);
+  const [signIn, isSignIn] = useState(true);
 
   const params = useSearchParams();
 

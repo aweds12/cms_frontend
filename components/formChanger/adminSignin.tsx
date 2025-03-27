@@ -1,8 +1,11 @@
+"use client";
+
 import React, { FormEvent, useState } from "react";
 import FormInput from "../formInput";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/config";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export default function AdminSigninForm() {
   const [creds, setCreds] = useState({
@@ -19,15 +22,14 @@ export default function AdminSigninForm() {
         creds.email,
         creds.password
       );
-      console.log(res);
       setCreds({
         email: "",
         password: "",
       });
 
       if (res && res.user.accessToken) {
-        localStorage.setItem("admin_token", res?.user.accessToken);
-        router.push("/admin");
+        Cookies.set("token", res?.user.accessToken);
+        router.push("/dashboard");
       }
     } catch (error) {
       console.error(error);

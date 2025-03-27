@@ -1,6 +1,9 @@
+"use client";
+
 import React, { FormEvent, useState } from "react";
 import FormInput from "../formInput";
 import { useRouter, useSearchParams } from "next/navigation";
+import Cookies from "js-cookie";
 
 export default function SigninForm() {
   const params = useSearchParams();
@@ -13,19 +16,15 @@ export default function SigninForm() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      // `https://cms-backend-one.vercel.app/auth/signin`
       const res: { token: string } = await fetch(
-        "http://localhost:8080/auth/signin",
+        process.env.NEXT_PUBLIC_API_KEY + "/auth/signin",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
-          body: JSON.stringify({
-            uid: creds.uid,
-            password: creds.password,
-          }),
+          body: JSON.stringify(creds),
         }
       ).then((response) => {
         if (response.status == 200) {
