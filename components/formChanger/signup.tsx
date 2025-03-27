@@ -2,9 +2,10 @@ import React, { FormEvent, useState } from "react";
 import FormInput from "../formInput";
 import { useSearchParams } from "next/navigation";
 
-export default function SignupForm() {
+export default function SignupForm({ regDone }: { regDone: () => void }) {
   const params = useSearchParams();
   const [creds, setCreds] = useState({
+    uid: "",
     email: "",
     username: "",
     password: "",
@@ -14,22 +15,26 @@ export default function SignupForm() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await fetch(
-        `https://cms-backend-one.vercel.app/auth/signup`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("fire_token")}`,
-          },
-          body: JSON.stringify({
-            email: creds.email,
-            username: creds.username,
-            password: creds.password,
-            role: creds.role,
-          }),
-        }
-      );
+      // `https://cms-backend-one.vercel.app/auth/signup`
+      const res = await fetch("http://localhost:8080/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+        },
+        body: JSON.stringify(creds),
+      });
+
+      if (res.status == 201) {
+        setCreds({
+          uid: "",
+          email: "",
+          username: "",
+          password: "",
+          role: params.get("role"),
+        });
+        regDone();
+      }
     } catch (err) {
       console.error(err);
     }
@@ -41,7 +46,14 @@ export default function SignupForm() {
       onSubmit={(e) => handleSubmit(e)}
     >
       <FormInput
-        type="email"
+        type="text"
+        placeholder={
+          params.get("role") == "teacher" ? "Багшийн" : "Сурагчийн код"
+        }
+        onChange={(e) => setCreds({ ...creds, uid: e.target.value })}
+      />
+      <FormInput
+        type="text"
         placeholder="И мэйл"
         onChange={(e) => setCreds({ ...creds, email: e.target.value })}
       />
@@ -60,7 +72,9 @@ export default function SignupForm() {
         type="submit"
         value="Бүртгүүлэх"
         className="bg-blue-500 w-full px-4 py-1.5 rounded hover:bg-blue-600 duration-200"
-        disabled={!creds.email || !creds.password || !creds.username}
+        disabled={
+          !creds.email || !creds.password || !creds.username || !creds.uid
+        }
       />
     </form>
   );

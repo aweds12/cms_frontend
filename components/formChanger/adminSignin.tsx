@@ -26,7 +26,7 @@ export default function AdminSigninForm() {
       });
 
       if (res && res.user.accessToken) {
-        localStorage.setItem("fire_token", res?.user.accessToken);
+        localStorage.setItem("admin_token", res?.user.accessToken);
         router.push("/admin");
       }
     } catch (error) {

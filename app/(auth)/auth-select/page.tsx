@@ -13,7 +13,7 @@ export default function AuthSelect({}: Props) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!!localStorage.getItem("fire_token")) {
+    if (!!localStorage.getItem("admin_token")) {
       router.push("/");
     }
     setLoading(false);

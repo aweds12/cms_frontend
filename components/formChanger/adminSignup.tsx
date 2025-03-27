@@ -22,7 +22,6 @@ export default function AdminSignupForm({ regDone }: { regDone: () => void }) {
         creds.password
       );
 
-      console.log({ res });
       setCreds({
         email: "",
         password: "",

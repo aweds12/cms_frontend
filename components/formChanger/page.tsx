@@ -42,7 +42,11 @@ export default function FormChanger() {
         </div>
       ) : (
         <div className="bg-gray-900">
-          {signIn ? <SigninForm /> : <SignupForm />}
+          {signIn ? (
+            <SigninForm />
+          ) : (
+            <SignupForm regDone={() => isSignIn(true)} />
+          )}
         </div>
       )}
     </div>

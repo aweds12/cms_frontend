@@ -2,19 +2,26 @@
 
 import FormChanger from "@/components/formChanger/page";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import React from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect } from "react";
 
 export default function Auth() {
   const params = useSearchParams();
+  const router = useRouter();
 
   const auth_type = params.get("role");
+
+  useEffect(() => {
+    if (!auth_type) {
+      router.push("/auth-select");
+    }
+  }, []);
 
   return (
     <div className="size-full h-screen flex gap-4 items-center justify-center bg-gray-800">
       <div className="w-fit">
         <Link
-          href={"/"}
+          href={"/auth-select"}
           className="flex gap-2 items-center hover:underline mb-4 cursor-pointer"
         >
           <svg

@@ -24,7 +24,7 @@ export default function AdminAuth() {
     <div className="size-full h-screen flex gap-4 items-center justify-center bg-gray-800">
       <div className="w-fit">
         <Link
-          href={"/"}
+          href={"/auth-select"}
           className="flex gap-2 items-center hover:underline mb-4 cursor-pointer"
         >
           <svg

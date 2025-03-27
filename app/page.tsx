@@ -10,10 +10,11 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!localStorage.getItem("fire_token")) {
+    if (!localStorage.getItem("admin_token")) {
       router.push("/auth-select");
       setLoading(false);
     }
+    setLoading(false);
   }, []);
 
   if (loading) {
@@ -27,11 +28,11 @@ export default function Home() {
         velit possimus sequi repellendus eum quas voluptates repudiandae dolorem
         quos consequuntur in omnis natus, voluptatum dolores amet atque quam
         libero?
+        <LogoutButton />
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         footer
       </footer>
-      <LogoutButton />
     </div>
   );
 }
