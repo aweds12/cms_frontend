@@ -2,12 +2,10 @@
 
 import React, { FormEvent, useState } from "react";
 import FormInput from "../formInput";
-import { useSearchParams } from "next/navigation";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/config";
 
 export default function AdminSignupForm({ regDone }: { regDone: () => void }) {
-  const params = useSearchParams();
   const [creds, setCreds] = useState({
     email: "",
     password: "",

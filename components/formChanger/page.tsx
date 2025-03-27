@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, Suspense, useState } from "react";
 import SigninForm from "./signin";
 import SignupForm from "./signup";
 import { useSearchParams } from "next/navigation";
@@ -44,9 +44,13 @@ export default function FormChanger() {
       ) : (
         <div className="bg-gray-900">
           {signIn ? (
-            <SigninForm />
+            <Suspense>
+              <SigninForm />
+            </Suspense>
           ) : (
-            <SignupForm regDone={() => isSignIn(true)} />
+            <Suspense>
+              <SignupForm regDone={() => isSignIn(true)} />
+            </Suspense>
           )}
         </div>
       )}

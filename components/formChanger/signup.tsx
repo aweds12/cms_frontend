@@ -3,7 +3,6 @@
 import React, { FormEvent, useState } from "react";
 import FormInput from "../formInput";
 import { useSearchParams } from "next/navigation";
-import Cookies from "js-cookie";
 
 export default function SignupForm({ regDone }: { regDone: () => void }) {
   const params = useSearchParams();
