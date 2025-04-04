@@ -16,7 +16,10 @@ export function middleware(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
   const pathname = req.nextUrl.pathname;
 
-  const publicRoutes = ["/admin-auth", "/auth", "/auth-select"];
+  const studentMenu = ["/courses"];
+  const teacherMenu = ["/courses", "/students"];
+
+  const publicRoutes = ["/auth", "/auth-select"];
 
   if (pathname == "/auth-select" && !!validateToken(token)) {
     return NextResponse.redirect(new URL("/", req.url));

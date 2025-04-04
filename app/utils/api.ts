@@ -1,33 +1,45 @@
+import Cookies from "js-cookie";
+
 interface FetchProps {
   url: string;
   method: RequestInit["method"];
-  body?: RequestInit["body"];
+  body?: object;
   params?: object;
 }
 
-export const api = async (props: FetchProps) => {
+export const api = async (props: FetchProps, noToken: boolean = false) => {
+  const REQUEST_URL =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:8080"
+      : process.env.NEXT_PUBLIC_API_KEY;
   try {
     const queryString = props.params
       ? "?" +
         new URLSearchParams(props.params as Record<string, string>).toString()
       : "";
 
-    const res = await fetch(
-      process.env.NEXT_PUBLIC_API_KEY + props.url + queryString,
-      {
-        method: props.method,
-        headers: {
+    const headers: HeadersInit = noToken
+      ? {
           "Content-Type": "application/json",
-        },
-        body: props.body ? JSON.stringify(props.body) : undefined,
+        }
+      : {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        };
+
+    const res = await fetch(REQUEST_URL + props.url + queryString, {
+      method: props.method,
+      headers: headers,
+      body: props.body ? JSON.stringify(props.body) : undefined,
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      } else {
+        return response.json();
       }
-    );
+    });
 
-    if (!res.ok) {
-      throw new Error(`HTTP error! Status: ${res.status}`);
-    }
-
-    return res.json();
+    return res;
   } catch (err) {
     console.error("API request failed:", err);
   }

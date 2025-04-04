@@ -2,37 +2,58 @@
 
 import React, { FormEvent, useState } from "react";
 import FormInput from "../formInput";
-import { useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
+import { api } from "@/app/utils/api";
+import { UserProps } from "@/app/types/schema";
 
-export default function SignupForm({ regDone }: { regDone: () => void }) {
-  const params = useSearchParams();
+interface Props {
+  role: "admin" | "teacher" | "student" | string;
+  regDone: () => void;
+}
+
+export default function SignupForm({ role, regDone }: Props) {
   const [creds, setCreds] = useState({
     uid: "",
     email: "",
     username: "",
     password: "",
-    role: params.get("role"),
+    role: role,
   });
+
+  const getRoleName = () => {
+    switch (role) {
+      case "admin":
+        return "Админы код";
+      case "teacher":
+        return "Багшийн код";
+      case "student":
+        return "Сурагчын код";
+      default:
+        return "Админы код";
+    }
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const apiurl = `${process.env.NEXT_PUBLIC_API_KEY}/auth/signup`;
-    try {
-      const res = await fetch(apiurl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(creds),
-      });
 
-      if (res.status == 201) {
+    try {
+      const res: { message: string; result: UserProps } = await api(
+        {
+          url: "/auth/signup",
+          method: "POST",
+          body: creds,
+        },
+        true
+      );
+
+      if (!!res.result) {
+        toast.success("Амжилттай бүртгүүллээ");
         setCreds({
           uid: "",
           email: "",
           username: "",
           password: "",
-          role: params.get("role"),
+          role: role,
         });
         regDone();
       }
@@ -48,9 +69,7 @@ export default function SignupForm({ regDone }: { regDone: () => void }) {
     >
       <FormInput
         type="text"
-        placeholder={
-          params.get("role") == "teacher" ? "Багшийн" : "Сурагчийн код"
-        }
+        placeholder={getRoleName()}
         onChange={(e) => setCreds({ ...creds, uid: e.target.value })}
       />
       <FormInput

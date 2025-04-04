@@ -1,11 +1,15 @@
 "use client";
 
-import AuthCard from "@/components/authCard";
+import AuthCard from "@/app/components/authCard";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function AuthSelect() {
   const router = useRouter();
+
+  useEffect(() => {
+    localStorage.removeItem("role");
+  }, []);
 
   return (
     <div className="flex bg-gray-800 min-h-screen items-center justify-center p-20 overflow-y-auto">
@@ -14,21 +18,30 @@ export default function AuthSelect() {
           <AuthCard
             type="admin"
             title="Админ"
-            onClick={() => router.push("/admin-auth?role=admin")}
+            onClick={() => {
+              localStorage.setItem("role", "admin");
+              router.push("/auth?role=admin");
+            }}
           />
         </div>
         <div className="flex justify-center w-full">
           <AuthCard
             type="teacher"
             title="Багш"
-            onClick={() => router.push("/auth?role=teacher")}
+            onClick={() => {
+              localStorage.setItem("role", "teacher");
+              router.push("/auth?role=teacher");
+            }}
           />
         </div>
         <div className="flex justify-center w-full">
           <AuthCard
             type="student"
             title="Сурагч"
-            onClick={() => router.push("/auth?role=student")}
+            onClick={() => {
+              localStorage.setItem("role", "student");
+              router.push("/auth?role=student");
+            }}
           />
         </div>
       </div>

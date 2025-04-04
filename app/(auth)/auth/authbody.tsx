@@ -1,21 +1,23 @@
 "use client";
 
-import FormChanger from "@/components/formChanger/page";
+import FormChanger from "@/app/components/formChanger/page";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect } from "react";
+import useToken from "@/app/hooks/useToken";
 
 export default function AuthBody() {
   const params = useSearchParams();
   const router = useRouter();
+  const [token] = useToken();
 
   const auth_type = params.get("role");
 
   useEffect(() => {
-    if (!auth_type) {
-      router.push("/auth-select");
+    if (!auth_type || !!token) {
+      router.push("/");
     }
-  }, []);
+  }, [auth_type, token, router]);
 
   return (
     <div className="size-full h-screen flex gap-4 items-center justify-center bg-gray-800">

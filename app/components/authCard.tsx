@@ -2,7 +2,7 @@ import React from "react";
 
 type Props = {
   type: "admin" | "teacher" | "student";
-  title: String;
+  title: string;
   onClick: () => void;
 };
 

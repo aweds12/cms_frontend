@@ -1,4 +1,4 @@
-import Loading from "@/components/loading";
+import Loading from "@/app/components/loading";
 import React, { Suspense } from "react";
 import AuthBody from "./authbody";
 
